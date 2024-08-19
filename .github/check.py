@@ -15,14 +15,7 @@ def load_public_key_from_file(file_path):
         public_key = serialization.load_pem_public_key(
             key_file.read(), backend=default_backend()
         )
-    return public_key
-
-
-def compare_keys(public_key1, public_key2):
-    return public_key1.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo,
-    ) == public_key2.public_bytes(
+    return public_key.public_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo,
     )
@@ -122,17 +115,23 @@ with open("status.csv", "w") as csvfile:
                 break
         values.append("✅" if flag else "❌")
 
-        root_certificate = x509.load_pem_x509_certificate(
-            pem_certificates[-1].encode(), default_backend()
+        root_public_key = (
+            x509.load_pem_x509_certificate(
+                pem_certificates[-1].encode(), default_backend()
+            )
+            .public_key()
+            .public_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PublicFormat.SubjectPublicKeyInfo,
+            )
         )
-        root_public_key = root_certificate.public_key()
-        if compare_keys(root_public_key, google_public_key):
+        if root_public_key == google_public_key:
             values.append("✅ Google hardware attestation root certificate")
-        elif compare_keys(root_public_key, aosp_ec_public_key):
+        elif root_public_key == aosp_ec_public_key:
             values.append("🟡 AOSP software attestation root certificate (EC)")
-        elif compare_keys(root_public_key, aosp_rsa_public_key):
+        elif root_public_key == aosp_rsa_public_key:
             values.append("🟡 AOSP software attestation root certificate (RSA)")
-        elif compare_keys(root_public_key, knox_public_key):
+        elif root_public_key == knox_public_key:
             values.append("✅ Samsung Knox attestation root certificate")
         else:
             values.append("❌ Unknown root certificate")
