@@ -1,27 +1,31 @@
 import csv
 from datetime import UTC, datetime
+from os import environ
 from pathlib import Path
+from string import Template
 
-import requests
 from cryptography import x509
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import ec, padding
+from cryptography.hazmat.primitives.serialization import (
+    Encoding,
+    PublicFormat,
+    load_pem_public_key,
+)
 from defusedxml.ElementTree import parse
+from requests import get
 
 
 def load_public_key_from_file(file_path):
     with open(file_path, "rb") as key_file:
-        public_key = serialization.load_pem_public_key(
-            key_file.read(), backend=default_backend()
-        ).public_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PublicFormat.SubjectPublicKeyInfo,
+        public_key = load_pem_public_key(key_file.read()).public_bytes(
+            encoding=Encoding.PEM,
+            format=PublicFormat.SubjectPublicKeyInfo,
         )
     return public_key
 
 
-revoked_keybox_list = requests.get(
+revoked_keybox_list = get(
     "https://android.googleapis.com/attestation/status",
     headers={
         "Cache-Control": "max-age=0, no-cache, no-store, must-revalidate",
@@ -35,6 +39,7 @@ aosp_ec_public_key = load_public_key_from_file(".github/aosp_ec.pem")
 aosp_rsa_public_key = load_public_key_from_file(".github/aosp_rsa.pem")
 knox_public_key = load_public_key_from_file(".github/knox.pem")
 
+count = total = 0
 with open("status.csv", "w") as csvfile:
     fieldnames = [
         "File",
@@ -57,9 +62,7 @@ with open("status.csv", "w") as csvfile:
             cert.text.strip()
             for cert in root.findall('.//Certificate[@format="pem"]')[:pem_number]
         ]
-        certificate = x509.load_pem_x509_certificate(
-            pem_certificates[0].encode(), default_backend()
-        )
+        certificate = x509.load_pem_x509_certificate(pem_certificates[0].encode())
         serial_number = hex(certificate.serial_number)[2:]
         values.append(serial_number)
 
@@ -78,10 +81,10 @@ with open("status.csv", "w") as csvfile:
         flag = True
         for i in range(pem_number - 1):
             son_certificate = x509.load_pem_x509_certificate(
-                pem_certificates[i].encode(), default_backend()
+                pem_certificates[i].encode()
             )
             father_certificate = x509.load_pem_x509_certificate(
-                pem_certificates[i + 1].encode(), default_backend()
+                pem_certificates[i + 1].encode()
             )
 
             if son_certificate.issuer != father_certificate.subject:
@@ -116,13 +119,11 @@ with open("status.csv", "w") as csvfile:
         values.append("✅" if flag else "❌")
 
         root_public_key = (
-            x509.load_pem_x509_certificate(
-                pem_certificates[-1].encode(), default_backend()
-            )
+            x509.load_pem_x509_certificate(pem_certificates[-1].encode())
             .public_key()
             .public_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PublicFormat.SubjectPublicKeyInfo,
+                encoding=Encoding.PEM,
+                format=PublicFormat.SubjectPublicKeyInfo,
             )
         )
         if root_public_key == google_public_key:
@@ -137,6 +138,16 @@ with open("status.csv", "w") as csvfile:
             values.append("❌ Unknown root certificate")
 
         status = revoked_keybox_list.get(serial_number)
-        values.append("✅" if not status else f"❌ {status['reason']}")
+        if not status:
+            values.append("✅")
+            count += 1
+        else:
+            values.append(f"❌ {status['reason']}")
+        total += 1
         output.append(dict(zip(fieldnames, values)))
     writer.writerows(sorted(output, key=lambda x: x[fieldnames[0]]))
+    environ["count"] = str(count)
+    environ["total"] = str(total)
+
+with open(".github/README.tmpl") as template, open("README.md", "w") as readme:
+    readme.write(Template(template.read()).safe_substitute(**environ))
