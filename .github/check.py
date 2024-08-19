@@ -54,8 +54,9 @@ with open("status.csv", "w") as csvfile:
     ]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
+    output = []
     for kb in Path(".").glob("*.xml"):
-        output = [kb.name]
+        values = [kb.name]
 
         root = parse(kb).getroot()
         pem_number = int(root.find(".//NumberOfCertificates").text.strip())
@@ -67,19 +68,19 @@ with open("status.csv", "w") as csvfile:
             pem_certificates[0].encode(), default_backend()
         )
         serial_number = hex(certificate.serial_number)[2:]
-        output.append(serial_number)
+        values.append(serial_number)
 
         subject = ""
         for rdn in certificate.subject:
             subject += f"{rdn.oid._name}={rdn.value} | "
         subject = subject[:-3]
-        output.append(subject)
+        values.append(subject)
 
         not_valid_before = certificate.not_valid_before_utc
         not_valid_after = certificate.not_valid_after_utc
         current_time = datetime.now(UTC)
         is_valid = not_valid_before <= current_time <= not_valid_after
-        output.append("✅" if is_valid else "❌")
+        values.append("✅" if is_valid else "❌")
 
         flag = True
         for i in range(pem_number - 1):
@@ -119,24 +120,24 @@ with open("status.csv", "w") as csvfile:
             except Exception as e:
                 flag = False
                 break
-        output.append("✅" if flag else "❌")
+        values.append("✅" if flag else "❌")
 
         root_certificate = x509.load_pem_x509_certificate(
             pem_certificates[-1].encode(), default_backend()
         )
         root_public_key = root_certificate.public_key()
         if compare_keys(root_public_key, google_public_key):
-            output.append("✅ Google hardware attestation root certificate")
+            values.append("✅ Google hardware attestation root certificate")
         elif compare_keys(root_public_key, aosp_ec_public_key):
-            output.append("🟡 AOSP software attestation root certificate (EC)")
+            values.append("🟡 AOSP software attestation root certificate (EC)")
         elif compare_keys(root_public_key, aosp_rsa_public_key):
-            output.append("🟡 AOSP software attestation root certificate (RSA)")
+            values.append("🟡 AOSP software attestation root certificate (RSA)")
         elif compare_keys(root_public_key, knox_public_key):
-            output.append("✅ Samsung Knox attestation root certificate")
+            values.append("✅ Samsung Knox attestation root certificate")
         else:
-            output.append("❌ Unknown root certificate")
-        
+            values.append("❌ Unknown root certificate")
+
         status = revoked_keybox_list.get(serial_number)
-        output.append("✅" if not status else f"❌ {status['reason']}")
-        
-        writer.writerow(dict(zip(fieldnames, output)))
+        values.append("✅" if not status else f"❌ {status['reason']}")
+        output.append(dict(zip(fieldnames, values)))
+    writer.writerows(sorted(output, key=lambda x: x[fieldnames[0]]))
