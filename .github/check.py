@@ -1,6 +1,5 @@
 import csv
 from datetime import UTC, datetime
-from os import environ
 from pathlib import Path
 from string import Template
 
@@ -146,8 +145,8 @@ with open("status.csv", "w") as csvfile:
         total += 1
         output.append(dict(zip(fieldnames, values)))
     writer.writerows(sorted(output, key=lambda x: x[fieldnames[0]]))
-    environ["count"] = str(count)
-    environ["total"] = str(total)
 
 with open(".github/README.tmpl") as template, open("README.md", "w") as readme:
-    readme.write(Template(template.read()).substitute(mapping=environ))
+    readme.write(
+        Template(template.read()).substitute(count=str(count), total=str(total))
+    )
