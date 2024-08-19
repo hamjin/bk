@@ -150,6 +150,5 @@ with open("status.csv", "w") as csvfile:
     environ["total"] = str(total)
 
 with open(".github/README.tmpl") as template, open("README.md", "w") as readme:
-    s = Template(template.read())
-    print(s.get_identifiers())
-    readme.write(s.substitute(mapping=environ))
+    print(environ)
+    readme.write(Template(template.read()).substitute(mapping=environ))
