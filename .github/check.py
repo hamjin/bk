@@ -14,11 +14,11 @@ def load_public_key_from_file(file_path):
     with open(file_path, "rb") as key_file:
         public_key = serialization.load_pem_public_key(
             key_file.read(), backend=default_backend()
+        ).public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo,
         )
-    return public_key.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo,
-    )
+    return public_key
 
 
 revoked_keybox_list = requests.get(
