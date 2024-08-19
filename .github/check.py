@@ -152,4 +152,4 @@ with open("status.csv", "w") as csvfile:
 with open(".github/README.tmpl") as template, open("README.md", "w") as readme:
     s = Template(template.read())
     print(s.get_identifiers())
-    readme.write(s.substitute(environ))
+    readme.write(s.substitute(mapping=environ))
