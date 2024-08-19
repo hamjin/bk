@@ -149,6 +149,5 @@ with open("status.csv", "w") as csvfile:
     environ["count"] = str(count)
     environ["total"] = str(total)
 
-print("env:",str(environ))
 with open(".github/README.tmpl") as template, open("README.md", "w") as readme:
-    readme.write(Template(template.read()).safe_substitute(**environ))
+    readme.write(Template(template.read()).substitute(environ))
