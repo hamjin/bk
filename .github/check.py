@@ -145,8 +145,3 @@ with open("status.csv", "w") as csvfile:
         total += 1
         output.append(dict(zip(fieldnames, values)))
     writer.writerows(sorted(output, key=lambda x: x[fieldnames[0]]))
-
-with open(".github/README.tmpl") as template, open("README.md", "w") as readme:
-    readme.write(
-        Template(template.read()).substitute(count=str(count), total=str(total))
-    )
