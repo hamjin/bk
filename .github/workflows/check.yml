@@ -24,10 +24,10 @@ jobs:
       contents: write
   
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-python@v3
         with:
           python-version: "3.12"
+      - uses: actions/checkout@v4
       - run: pip install -r .github/requirements.txt
       - run: python3 .github/check.py
       - uses: stefanzweifel/git-auto-commit-action@v5
