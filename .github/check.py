@@ -49,8 +49,8 @@ with open("status.csv", "w") as csvfile:
         "Subject",
         "Certificate within validity period",
         "Valid keychain",
-        "note",
-        "Serial number not found in Google's revoked keybox list",
+        "Note",
+        "Not found in Google's revoked keybox list",
     ]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
@@ -135,6 +135,8 @@ with open("status.csv", "w") as csvfile:
             output.append("✅ Samsung Knox attestation root certificate")
         else:
             output.append("❌ Unknown root certificate")
-
-        output.append("✅" if not revoked_keybox_list.get(serial_number, None) else "❌")
+        
+        status = revoked_keybox_list.get(serial_number)
+        output.append("✅" if not status else f"❌ {status['reason']}")
+        
         writer.writerow(dict(zip(fieldnames, output)))
