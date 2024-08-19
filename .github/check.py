@@ -1,7 +1,6 @@
 import csv
 from datetime import UTC, datetime
 from pathlib import Path
-from string import Template
 
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes
@@ -38,7 +37,6 @@ aosp_ec_public_key = load_public_key_from_file(".github/aosp_ec.pem")
 aosp_rsa_public_key = load_public_key_from_file(".github/aosp_rsa.pem")
 knox_public_key = load_public_key_from_file(".github/knox.pem")
 
-count = total = 0
 with open("status.csv", "w") as csvfile:
     fieldnames = [
         "File",
@@ -65,11 +63,9 @@ with open("status.csv", "w") as csvfile:
         serial_number = hex(certificate.serial_number)[2:]
         values.append(serial_number)
 
-        subject = ""
-        for rdn in certificate.subject:
-            subject += f"{rdn.oid._name}={rdn.value} | "
-        subject = subject[:-3]
-        values.append(subject)
+        values.append(
+            " | ".join(f"{rdn.oid._name}={rdn.value}" for rdn in certificate.subject)
+        )
 
         not_valid_before = certificate.not_valid_before_utc
         not_valid_after = certificate.not_valid_after_utc
@@ -137,11 +133,7 @@ with open("status.csv", "w") as csvfile:
             values.append("❌ Unknown root certificate")
 
         status = revoked_keybox_list.get(serial_number)
-        if not status:
-            values.append("✅")
-            count += 1
-        else:
-            values.append(f"❌ {status['reason']}")
-        total += 1
+        values.append("✅" if not status else f"❌ {status['reason']}")
+
         output.append(dict(zip(fieldnames, values)))
     writer.writerows(sorted(output, key=lambda x: x[fieldnames[0]]))
