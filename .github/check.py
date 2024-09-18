@@ -146,4 +146,4 @@ with open("status.csv", "w") as csvfile:
         values.append("✅" if not status else f"❌ {status['reason']}")
 
         output.append(dict(zip(fieldnames, values)))
-    writer.writerows(sorted(output, key=lambda x: int(x[fieldnames[0]], 8)))
+    writer.writerows(sorted(output, key=lambda x: int(x[fieldnames[0]], 16)))
