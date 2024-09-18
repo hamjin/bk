@@ -10,7 +10,7 @@ from cryptography.hazmat.primitives.serialization import (
     PublicFormat,
     load_pem_public_key,
 )
-from defusedxml.ElementTree import parse
+from defusedxml.ElementTree import parse, ParseError
 from requests import get
 
 
@@ -55,9 +55,13 @@ with open("status.csv", "w") as csvfile:
     writer.writeheader()
     output = []
     for kb in Path(".").glob("**/*.xml"):
+        print(kb.name)
         values = list()
-
-        root = parse(kb).getroot()
+        try:
+            root = parse(kb).getroot()
+        except ParseError:
+            kb.unlink()
+            continue
         pem_number = int(root.find(".//NumberOfCertificates").text.strip())
         pem_certificates = [
             cert.text.strip()
@@ -66,6 +70,7 @@ with open("status.csv", "w") as csvfile:
         certificate = x509.load_pem_x509_certificate(pem_certificates[0].encode())
         serial_number = hex(certificate.serial_number)[2:]
         if serial_number in serial_numbers:
+            kb.unlink()
             continue
         else:
             serial_numbers.append(serial_number)
