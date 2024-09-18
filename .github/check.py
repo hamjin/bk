@@ -41,6 +41,7 @@ survivor, dead = Path("survivor"), Path("dead")
 survivor.mkdir(0o755, exist_ok=True)
 dead.mkdir(0o755, exist_ok=True)
 
+serial_numbers = []
 with open("status.csv", "w") as csvfile:
     fieldnames = [
         "Serial number",
@@ -64,6 +65,10 @@ with open("status.csv", "w") as csvfile:
         ]
         certificate = x509.load_pem_x509_certificate(pem_certificates[0].encode())
         serial_number = hex(certificate.serial_number)[2:]
+        if serial_number in serial_numbers:
+            continue
+        else:
+            serial_numbers.append(serial_number)
         values.append(serial_number)
 
         values.append(
