@@ -41,7 +41,7 @@ survivor, dead = Path("survivor"), Path("dead")
 survivor.mkdir(0o755, exist_ok=True)
 dead.mkdir(0o755, exist_ok=True)
 
-serial_numbers = []
+serial_numbers = list()
 with open("status.csv", "w") as csvfile:
     fieldnames = [
         "Serial number",
@@ -55,12 +55,10 @@ with open("status.csv", "w") as csvfile:
     writer.writeheader()
     output = []
     for kb in Path(".").glob("**/*.xml"):
-        print(kb.name)
         values = list()
         try:
             root = parse(kb).getroot()
         except ParseError:
-            kb.unlink()
             continue
         pem_number = int(root.find(".//NumberOfCertificates").text.strip())
         pem_certificates = [
@@ -70,7 +68,6 @@ with open("status.csv", "w") as csvfile:
         certificate = x509.load_pem_x509_certificate(pem_certificates[0].encode())
         serial_number = hex(certificate.serial_number)[2:]
         if serial_number in serial_numbers:
-            kb.unlink()
             continue
         else:
             serial_numbers.append(serial_number)
@@ -80,6 +77,7 @@ with open("status.csv", "w") as csvfile:
             " | ".join(f"{rdn.oid._name}={rdn.value}" for rdn in certificate.subject)
         )
 
+        # 感觉写错了
         not_valid_before = certificate.not_valid_before_utc
         not_valid_after = certificate.not_valid_after_utc
         current_time = datetime.now(UTC)
@@ -125,7 +123,6 @@ with open("status.csv", "w") as csvfile:
                 flag = False
                 break
         values.append("✅" if flag else "❌")
-
         root_public_key = (
             x509.load_pem_x509_certificate(pem_certificates[-1].encode())
             .public_key()
@@ -147,8 +144,8 @@ with open("status.csv", "w") as csvfile:
 
         status = revoked_keybox_list.get(serial_number)
         
-        kb.rename((dead if status else survivor) / f"{serial_number}.xml")
         values.append("✅" if not status else f"❌ {status['reason']}")
 
+        kb.rename((dead if status else survivor) / f"{serial_number}.xml")
         output.append(dict(zip(fieldnames, values)))
     writer.writerows(sorted(output, key=lambda x: int(x[fieldnames[0]], 16)))
