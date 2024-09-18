@@ -37,9 +37,12 @@ aosp_ec_public_key = load_public_key_from_file(".github/aosp_ec.pem")
 aosp_rsa_public_key = load_public_key_from_file(".github/aosp_rsa.pem")
 knox_public_key = load_public_key_from_file(".github/knox.pem")
 
+survivor, dead = Path("survivor"), Path("dead")
+survivor.mkdir(0o755, exist_ok=True)
+dead.mkdir(0o755, exist_ok=True)
+
 with open("status.csv", "w") as csvfile:
     fieldnames = [
-        "File",
         "Serial number",
         "Subject",
         "Certificate within validity period",
@@ -50,8 +53,8 @@ with open("status.csv", "w") as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
     output = []
-    for kb in Path(".").glob("*.xml"):
-        values = [kb.name]
+    for kb in Path(".").glob("**/*.xml"):
+        values = list()
 
         root = parse(kb).getroot()
         pem_number = int(root.find(".//NumberOfCertificates").text.strip())
@@ -133,6 +136,8 @@ with open("status.csv", "w") as csvfile:
             values.append("❌ Unknown root certificate")
 
         status = revoked_keybox_list.get(serial_number)
+        
+        kb.rename(Path(dead if status else survivor) / f"{serial_number}.xml")
         values.append("✅" if not status else f"❌ {status['reason']}")
 
         output.append(dict(zip(fieldnames, values)))
