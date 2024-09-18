@@ -1,5 +1,5 @@
 File,Serial number,Subject,Certificate within validity period,Valid keychain,Note,Not found in Google's revoked keybox list
-2alL1ky.xml,2b0a09a69c59b482ddb8a21786fdd439,title=TEE | serialNumber=0c8684c66d5c3f63c2d2494b72b82d50,✅,✅,✅ Google hardware attestation root certificate,✅
+2alL1ky.xml,2b0a09a69c59b482ddb8a21786fdd439,title=TEE | serialNumber=0c8684c66d5c3f63c2d2494b72b82d50,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
 3YxC37x4.xml,5871646753572800414,serialNumber=e23a5cdb6e2ff2e9 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
 8qnsDAYP.xml,511301ba8fd1c44c317f78dc1d7d2cd1,title=TEE | serialNumber=bb1bea2a057e922d7725f26eb1c3b1a5,✅,✅,✅ Google hardware attestation root certificate,✅
 DL1neMtH.xml,10182630751496984110,serialNumber=35e0d466d6467970 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
