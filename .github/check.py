@@ -137,7 +137,7 @@ with open("status.csv", "w") as csvfile:
 
         status = revoked_keybox_list.get(serial_number)
         
-        kb.rename(Path(dead if status else survivor) / f"{serial_number}.xml")
+        kb.rename((dead if status else survivor) / f"{serial_number}.xml")
         values.append("✅" if not status else f"❌ {status['reason']}")
 
         output.append(dict(zip(fieldnames, values)))
