@@ -1,26 +1,26 @@
 Serial number,Subject,Certificate within validity period,Valid keychain,Note,Not found in Google's revoked keybox list
-2441400622645777626,serialNumber=4d0008edd4523f4a,✅,✅,✅ Google hardware attestation root certificate,✅
-3644717209372610241,serialNumber=38f26f1125a20e5b,✅,✅,✅ Google hardware attestation root certificate,✅
-4393895627937872466,serialNumber=b71b0a2454c69577 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
-4648453603379027456,serialNumber=18d9fa8a1e02a531,✅,✅,✅ Google hardware attestation root certificate,✅
-5871646753572800414,serialNumber=e23a5cdb6e2ff2e9 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
-6843403734403185074,serialNumber=a1cdc6b69229c69f,✅,✅,✅ Google hardware attestation root certificate,✅
-6933392829777369721,serialNumber=2cb3e9572d82a93b,✅,✅,✅ Google hardware attestation root certificate,✅
-9460229422403884383,serialNumber=2fc78bcdd321b854,✅,✅,✅ Google hardware attestation root certificate,✅
-9703144777339823906,serialNumber=b410301e51e47cfb,✅,✅,✅ Google hardware attestation root certificate,✅
-9714381576908752953,serialNumber=75f2bfacd5d24ade,✅,✅,✅ Google hardware attestation root certificate,✅
-10182630751496984110,serialNumber=35e0d466d6467970 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
-11004354893796124535,serialNumber=49ed31cf1d5b73fa | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
-12668387747158417143,serialNumber=5d0fa1fc96023121 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
-13063048137843225758,serialNumber=d0d0c8d8f4a0f97d | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
-14138857243207454896,serialNumber=094ca2793d91c305 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,✅
-17342033108574180851,serialNumber=0bb56886b018b336,✅,✅,✅ Google hardware attestation root certificate,✅
-b48dbbd75efb21cd0a48497f8176d0,title=TEE | serialNumber=d85fc4b748795139f5f3be099c39c139,✅,✅,✅ Google hardware attestation root certificate,✅
-208f5008c39038a7105aa3d2ccfa8f76,title=TEE | serialNumber=026b244e023abdc307c080b2a070fcea,✅,✅,✅ Google hardware attestation root certificate,✅
-24f7bff38ae38534a66dd409a15018d3,title=TEE | serialNumber=59a927ca4c978eedd100e8a0b2189420,✅,✅,✅ Google hardware attestation root certificate,✅
-263c56c9661db1056077c41533e9273a,title=TEE | serialNumber=4464fc9748f7fa6f1ca1b244ffe8531c,✅,✅,✅ Google hardware attestation root certificate,✅
+2441400622645777626,serialNumber=4d0008edd4523f4a,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+3644717209372610241,serialNumber=38f26f1125a20e5b,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+4393895627937872466,serialNumber=b71b0a2454c69577 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+4648453603379027456,serialNumber=18d9fa8a1e02a531,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+5871646753572800414,serialNumber=e23a5cdb6e2ff2e9 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+6843403734403185074,serialNumber=a1cdc6b69229c69f,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+6933392829777369721,serialNumber=2cb3e9572d82a93b,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+9460229422403884383,serialNumber=2fc78bcdd321b854,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+9703144777339823906,serialNumber=b410301e51e47cfb,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+9714381576908752953,serialNumber=75f2bfacd5d24ade,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+10182630751496984110,serialNumber=35e0d466d6467970 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+11004354893796124535,serialNumber=49ed31cf1d5b73fa | title=TEE,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+12668387747158417143,serialNumber=5d0fa1fc96023121 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+13063048137843225758,serialNumber=d0d0c8d8f4a0f97d | title=TEE,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+14138857243207454896,serialNumber=094ca2793d91c305 | title=TEE,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+17342033108574180851,serialNumber=0bb56886b018b336,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+b48dbbd75efb21cd0a48497f8176d0,title=TEE | serialNumber=d85fc4b748795139f5f3be099c39c139,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+208f5008c39038a7105aa3d2ccfa8f76,title=TEE | serialNumber=026b244e023abdc307c080b2a070fcea,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+24f7bff38ae38534a66dd409a15018d3,title=TEE | serialNumber=59a927ca4c978eedd100e8a0b2189420,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+263c56c9661db1056077c41533e9273a,title=TEE | serialNumber=4464fc9748f7fa6f1ca1b244ffe8531c,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
 2b0a09a69c59b482ddb8a21786fdd439,title=TEE | serialNumber=0c8684c66d5c3f63c2d2494b72b82d50,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
-511301ba8fd1c44c317f78dc1d7d2cd1,title=TEE | serialNumber=bb1bea2a057e922d7725f26eb1c3b1a5,✅,✅,✅ Google hardware attestation root certificate,✅
-b46f082b679a78cd1ddb33727d62fb22,title=TEE | serialNumber=446093695543b5ccc6f96849ab486ff7,✅,✅,✅ Google hardware attestation root certificate,✅
-cf408d495722b0ac413071aff33e5827,title=TEE | serialNumber=9ccc7cb13f0bddc940736bcda24698c6,✅,✅,✅ Google hardware attestation root certificate,✅
+511301ba8fd1c44c317f78dc1d7d2cd1,title=TEE | serialNumber=bb1bea2a057e922d7725f26eb1c3b1a5,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+b46f082b679a78cd1ddb33727d62fb22,title=TEE | serialNumber=446093695543b5ccc6f96849ab486ff7,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
+cf408d495722b0ac413071aff33e5827,title=TEE | serialNumber=9ccc7cb13f0bddc940736bcda24698c6,✅,✅,✅ Google hardware attestation root certificate,❌ KEY_COMPROMISE
 fc609574570c3e0a1d347e02a2ad6d4d,title=TEE | serialNumber=3b6c77873cdf80616fc7a86bb4c2944f,✅,✅,✅ Google hardware attestation root certificate,❌ SOFTWARE_FLAW
